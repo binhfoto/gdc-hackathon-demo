@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import '@gooddata/react-components/styles/css/main.css';
-import { Visualization } from '@gooddata/react-components';
+
 
 
 class App extends Component {
