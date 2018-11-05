@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import AppBar from './AppBar';
-
 import '@gooddata/react-components/styles/css/main.css';
+import '../styles/index.css';
+
 import InsightList from './InsightList';
 import EmbeddedAD from './EmbeddedAD';
+import AppBar from './material-ui/AppBar';
+import withTheme from './material-ui/withTheme';
 import {insightUris, projectId} from '../mock-data';
 
 class Dashboard extends Component {
@@ -20,9 +21,11 @@ class Dashboard extends Component {
 
     renderContent() {
         return (
-            this.state.isOpenAD ?
-                <EmbeddedAD/> :
-                <InsightList projectId={this.state.projectId} insights={this.state.insights}/>
+            <div className="dashboard">
+                {this.state.isOpenAD ?
+                    <EmbeddedAD/> :
+                    <InsightList projectId={this.state.projectId} insights={this.state.insights}/>}
+            </div>
         );
     }
 
@@ -40,8 +43,4 @@ class Dashboard extends Component {
     }
 }
 
-Dashboard.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default Dashboard;
+export default withTheme(Dashboard);
