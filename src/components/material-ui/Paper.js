@@ -12,7 +12,7 @@ const styles = theme => ({
   },
 });
 
-function MyPaper(props) {
+const MyPaper = (props) => {
   const { classes, children } = props;
 
   return (
@@ -22,7 +22,7 @@ function MyPaper(props) {
       </Paper>
     </div>
   );
-}
+};
 
 MyPaper.propTypes = {
   classes: PropTypes.object.isRequired,

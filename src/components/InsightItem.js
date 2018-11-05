@@ -5,16 +5,16 @@ import Menu from './material-ui/Menu';
 import {Visualization} from '@gooddata/react-components';
 
 
-export default ({projectId, uri}) => {
+export default ({projectId, uri, onEdit, onDelete}) => {
     return (
         <Grid item xs={6}>
             <Paper>
-                <Menu/>
+                <Menu uri={uri} onEdit={onEdit} onDelete={onDelete}/>
                 <div className="insight-item">
                     <Visualization
                         projectId={projectId}
                         uri={uri}
-                        config={{legend: {position: 'bottom'}}}
+                        config={{legend: {position: 'right'}}}
                     />
                 </div>
             </Paper>

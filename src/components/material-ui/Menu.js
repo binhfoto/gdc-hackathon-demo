@@ -1,7 +1,7 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
@@ -10,12 +10,22 @@ class MyMenu extends React.Component {
         anchorEl: null,
     };
 
-    handleClick = event => {
+    handleOpenMenu = event => {
         this.setState({anchorEl: event.currentTarget});
     };
 
-    handleClose = () => {
+    handleCloseMenu = () => {
         this.setState({anchorEl: null});
+    };
+
+    handleEditClick = () => {
+        this.handleCloseMenu();
+        this.props.onEdit(this.props.uri);
+    };
+
+    handleDeleteClick = () => {
+        this.handleCloseMenu();
+        this.props.onDelete(this.props.uri);
     };
 
     render() {
@@ -23,12 +33,12 @@ class MyMenu extends React.Component {
         const open = Boolean(anchorEl);
 
         return (
-            <div className="menu">
+            <div className="menu-icon">
                 <IconButton
                     aria-label="More"
                     aria-owns={open ? 'long-menu' : undefined}
                     aria-haspopup="true"
-                    onClick={this.handleClick}
+                    onClick={this.handleOpenMenu}
                 >
                     <MoreVertIcon/>
                 </IconButton>
@@ -36,11 +46,10 @@ class MyMenu extends React.Component {
                     id="insight-menu"
                     anchorEl={anchorEl}
                     open={open}
-                    onClose={this.handleClose}
-
+                    onClose={this.handleCloseMenu}
                 >
-                    <MenuItem onClick={this.handleClose}>Edit</MenuItem>
-                    <MenuItem onClick={this.handleClose}>Delete</MenuItem>
+                    <MenuItem onClick={this.handleEditClick}>Edit</MenuItem>
+                    <MenuItem onClick={this.handleDeleteClick}>Delete</MenuItem>
                 </Menu>
             </div>
         );

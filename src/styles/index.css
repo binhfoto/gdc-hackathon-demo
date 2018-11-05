@@ -2,7 +2,7 @@
     padding: 16px;
 }
 
-.menu {
+.menu-icon, .close-icon {
     width: 20px;
     margin-right: 20px;
     margin-left: auto;
@@ -10,4 +10,12 @@
 
 .insight-item {
     height: 350px;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
 }

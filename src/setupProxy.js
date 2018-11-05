@@ -1,6 +1,5 @@
 const proxy = require('http-proxy-middleware');
-
-const hostname = 'staging3.intgdc.com';
+const {hostname} = require('./config');
 
 module.exports = function (app) {
      app.use(proxy("/gdc", {
