@@ -10,7 +10,7 @@ export default ({projectId, uri}) => {
         <Grid item xs={6}>
             <Paper>
                 <Menu/>
-                <div style={{height: 350}}>
+                <div className="insight-item">
                     <Visualization
                         projectId={projectId}
                         uri={uri}
