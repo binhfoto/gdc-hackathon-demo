@@ -48,7 +48,7 @@ class Dashboard extends Component {
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="h6" color="inherit" className={classes.grow}>
-                            Demo App
+                            Hackathon Demo
                         </Typography>
                     </Toolbar>
                 </AppBar>
