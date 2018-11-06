@@ -2,8 +2,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Close from '@material-ui/icons/Close';
 import Paper from './material-ui/Paper';
+const {hostname, projectId} = require('../config');
 
-const EmbeddedAD = ({url, onClose}) => {
+const EmbeddedAD = ({onClose}) => {
+    const src = `https://${hostname}/analyze/embedded/#/${projectId}/reportId/edit`;
     return (
         <Paper>
             <Button
@@ -18,7 +20,7 @@ const EmbeddedAD = ({url, onClose}) => {
             <iframe
                 id="gdc"
                 title="Embedded AD"
-                src={url}
+                src={src}
                 frameBorder="0"
                 allowFullScreen
                 width="100%"

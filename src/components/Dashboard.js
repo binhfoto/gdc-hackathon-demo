@@ -7,7 +7,7 @@ import InsightList from './InsightList';
 import EmbeddedAD from './EmbeddedAD';
 import AppBar from './material-ui/AppBar';
 import withTheme from './material-ui/withTheme';
-import { getEmbeddedUrl, getReportObjectId } from '../utils';
+import {getReportObjectId} from '../utils';
 import {sendMessage, registerReceiveMessage, unregisterReceiveMessage} from '../utils/communication';
 const {projectId, insightUris} = require('../config');
 
@@ -16,7 +16,6 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url: '',
             isOpenAD: false,
             insights: insightUris.map((uri) => ({uri, key: uuidv4()}))
         };
@@ -27,16 +26,13 @@ class Dashboard extends Component {
 
     handleEditClick = (uri) => {
         console.log('edit report', uri);
-        this.setState({
-            isOpenAD: true,
-            url: getEmbeddedUrl(uri)
-        });
-        // const reportId = getReportObjectId(uri);
-        // if (reportId) {
-        //     sendMessage({reportId, projectId});
-        // } else {
-        //     console.error('Can\'t get report id from uri', uri);
-        // }
+        this.setState({isOpenAD: true});
+        const reportId = getReportObjectId(uri);
+        if (reportId) {
+            sendMessage({reportId, projectId});
+        } else {
+            console.error('Can\'t get report id from uri', uri);
+        }
     };
 
     handleDeleteClick = (uri) => {
@@ -90,7 +86,7 @@ class Dashboard extends Component {
                     />
                 </div>
                 <div className={this.state.isOpenAD ? 'show' : 'hide'}>
-                    <EmbeddedAD url={this.state.url} onClose={this.handleCloseClick}/>
+                    <EmbeddedAD onClose={this.handleCloseClick}/>
                 </div>
             </div>
         );
