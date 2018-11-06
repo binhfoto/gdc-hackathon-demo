@@ -92,8 +92,14 @@ class Dashboard extends Component {
         );
     }
 
+    addNewInsight() {
+        console.log('add new insight');
+        this.setState({ isOpenAD: true });
+        sendMessage();
+    }
+
     renderHeader() {
-        return (<AppBar/>);
+        return (<AppBar addNewInsight={this.addNewInsight.bind(this)}/>);
     }
 
     render() {
