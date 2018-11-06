@@ -19,11 +19,12 @@ const EmbeddedAD = ({onClose}) => {
             </Button>
             <iframe
                 id="gdc"
+                title="Embedded AD"
                 src={src}
                 frameBorder="0"
                 allowFullScreen
                 width="100%"
-                height="800px"
+                height="1100px"
             >
             </iframe>
         </Paper>

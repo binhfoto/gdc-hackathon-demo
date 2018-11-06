@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import '@gooddata/react-components/styles/css/main.css';
 import '../styles/index.css';
-
+import uuidv4 from 'uuid/v4';
+import _ from 'lodash';
 import InsightList from './InsightList';
 import EmbeddedAD from './EmbeddedAD';
 import AppBar from './material-ui/AppBar';
 import withTheme from './material-ui/withTheme';
+import {getReportObjectId} from '../utils';
+import {sendMessage, registerReceiveMessage, unregisterReceiveMessage} from '../utils/communication';
 const {projectId, insightUris} = require('../config');
 
 class Dashboard extends Component {
@@ -14,23 +17,61 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             isOpenAD: false,
-            projectId: projectId || '',
-            insights: insightUris.map((uri, index) => ({uri, key: index}))
+            insights: insightUris.map((uri) => ({uri, key: uuidv4()}))
         };
+
+        this.editedUris = [];
+        registerReceiveMessage(this.handleReceiveMessage);
     }
 
     handleEditClick = (uri) => {
-        this.setState({ isOpenAD: true});
-        console.log('edit', uri);
+        console.log('edit report', uri);
+        this.setState({isOpenAD: true});
+        const reportId = getReportObjectId(uri);
+        if (reportId) {
+            sendMessage({reportId, projectId});
+        } else {
+            console.error('Can\'t get report id from uri', uri);
+        }
     };
 
     handleDeleteClick = (uri) => {
-        console.log('delete', uri);
+        console.log('delete report', uri);
+        let {insights} = this.state;
+        insights = insights.filter(insight => {
+            let {uri: _uri} = insight;
+            return uri !== _uri;
+        });
+        this.setState({insights});
     };
 
-    handleCloseClick = (uri) => {
-        this.setState({ isOpenAD: false});
-        console.log('close', uri);
+    handleCloseClick = () => {
+
+        this.setState({isOpenAD: false});
+        console.log('close AD');
+
+        if (!this.editedUris.length) return;
+
+        let {insights} = this.state;
+
+        this.editedUris.forEach(uri => {
+            const index = _.findIndex(insights, (insight) => {
+                return insight.uri === uri;
+            });
+            if (index === -1) {
+                insights.push({
+                    uri, key: uuidv4()
+                });
+            } else {
+                insights[index].key = uuidv4();
+            }
+        });
+        this.editedUris = [];
+        this.setState({insights});
+    };
+
+    handleReceiveMessage = (uri) => {
+        this.editedUris.push(uri);
     };
 
     renderContent() {
@@ -38,7 +79,7 @@ class Dashboard extends Component {
             <div className="dashboard">
                 <div className={this.state.isOpenAD ? 'hide' : 'show'}>
                     <InsightList
-                        projectId={this.state.projectId}
+                        projectId={projectId}
                         insights={this.state.insights}
                         onEdit={this.handleEditClick}
                         onDelete={this.handleDeleteClick}
@@ -62,6 +103,10 @@ class Dashboard extends Component {
                 {this.renderContent()}
             </div>
         );
+    }
+
+    componentWillUnmount() {
+        unregisterReceiveMessage();
     }
 }
 

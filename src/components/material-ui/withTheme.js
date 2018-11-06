@@ -5,8 +5,8 @@ import blue from '@material-ui/core/colors/blue';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: blue[500] }, // Purple and green play nicely together.
-    secondary: { main: pink[500] }, // This is just green.A700 as hex.
+    primary: { main: blue[500] },
+    secondary: { main: pink[500] },
   },
 });
 
