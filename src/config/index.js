@@ -1,5 +1,5 @@
 const
-    hostname = 'staging3.intgdc.com',
+    hostname = 'client-demo.na.intgdc.com:50046',
     projectId = 'jroecoqa7jywstxy1hxp8lwl2c4nc10t',
     insightUris = [
         `/gdc/md/${projectId}/obj/76916`,
