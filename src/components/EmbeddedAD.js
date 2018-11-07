@@ -5,7 +5,7 @@ import {createReportUrl} from '../utils';
 
 const EmbeddedAD = ({onClose, reportUrl = createReportUrl()}) => (
     <Paper>
-        <Button size="small" variant="contained" color="primary" onClick={onClose}>
+        <Button size="small" variant="contained" color="primary" onClick={onClose} className='btn-finish'>
             Finish Editing
         </Button>
         <iframe
@@ -15,7 +15,7 @@ const EmbeddedAD = ({onClose, reportUrl = createReportUrl()}) => (
             frameBorder="0"
             allowFullScreen
             width="100%"
-            height="1100px" // suggested height from help.gooddata.com
+            height="100%" // suggested height from help.gooddata.com
         >
         </iframe>
     </Paper>
