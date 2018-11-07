@@ -19,3 +19,19 @@
 .hide {
     display: none;
 }
+
+.dashboard-operation {
+    margin-top: -10px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-operation .left-side {
+    flex-grow: 1;
+}
+
+.dashboard-operation .right-side {
+
+
+}

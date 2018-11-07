@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import '@gooddata/react-components/styles/css/main.css';
 import '../styles/index.css';
 import uuidv4 from 'uuid/v4';
-import _ from 'lodash'; // TODO: should import necessary apis
+import findIndex from 'lodash/findIndex';
 import InsightList from './InsightList';
 import EmbeddedAD from './EmbeddedAD';
 import AppBar from './material-ui/AppBar';
+import DashboardOperation from './DashboardOperation';
 import withTheme from './material-ui/withTheme';
 import {createReportUrl, getReportObjectId} from '../utils';
 import {registerReceiveMessage, sendMessage, unregisterReceiveMessage} from '../utils/communication';
@@ -30,6 +31,10 @@ class Dashboard extends Component {
         registerReceiveMessage(this.handleReceiveMessage);
     }
 
+    handleAddClick = () => {
+        this.handleEditClick('/reportId');
+    };
+
     handleEditClick = (uri) => {
         console.log('edit report', uri);
 
@@ -39,8 +44,12 @@ class Dashboard extends Component {
         }
 
         if (this.state.enablePostMessage) {
+            const data = reportId === 'reportId' ?
+                {projectId} : // new insight
+                {reportId, projectId}; // edit insight
+
             // send message to embedded AD
-            sendMessage({reportId, projectId});
+            sendMessage(data);
         } else {
             // reload embedded AD with report Id
             this.forceEmbeddedADUpdate();
@@ -73,7 +82,7 @@ class Dashboard extends Component {
         // in AD, user can create new and edit many insights
         // once AD closed, these insights should be created or updated
         this.editedUris.forEach(uri => {
-            const index = _.findIndex(insights, (insight) => {
+            const index = findIndex(insights, (insight) => {
                 return insight.uri === uri;
             });
             if (index === -1) {
@@ -115,6 +124,11 @@ class Dashboard extends Component {
         return (
             <div className="dashboard">
                 <div className={this.state.isOpenAD ? 'hide' : 'show'}>
+                    <DashboardOperation
+                        enablePostMessage={this.state.enablePostMessage}
+                        onEnablePostMessageToggle={this.handleEnablePostMessageToggle}
+                        onNewInSight={this.handleAddClick}
+                    />
                     <InsightList
                         projectId={projectId}
                         insights={this.state.insights}
@@ -135,10 +149,7 @@ class Dashboard extends Component {
 
     renderHeader() {
         return (
-            <AppBar
-                enablePostMessage={this.state.enablePostMessage}
-                onEnablePostMessageToggle={this.handleEnablePostMessageToggle}
-            />
+            <AppBar/>
         );
     }
 

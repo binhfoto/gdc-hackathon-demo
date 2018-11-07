@@ -1,19 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Close from '@material-ui/icons/Close';
 import Paper from './material-ui/Paper';
 import {createReportUrl} from '../utils';
 
 const EmbeddedAD = ({onClose, reportUrl = createReportUrl()}) => (
     <Paper>
-        <Button
-            mini
-            aria-label="Close"
-            onClick={onClose}
-            color="secondary"
-            variant="fab"
-        >
-            <Close/>
+        <Button size="small" variant="contained" color="primary" onClick={onClose}>
+            Finish Editing
         </Button>
         <iframe
             id="gdc"
