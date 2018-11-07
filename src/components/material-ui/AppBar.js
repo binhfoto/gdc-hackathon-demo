@@ -5,6 +5,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const styles = {
     grow: {
@@ -12,8 +15,8 @@ const styles = {
     },
     menuButton: {
         marginLeft: -12,
-        marginRight: 20,
-    },
+        marginRight: 20
+    }
 };
 
 const MyAppBar = (props) => (
@@ -25,6 +28,20 @@ const MyAppBar = (props) => (
             <Typography variant="h6" color="inherit" className={props.classes.grow}>
                 Hackathon Demo
             </Typography>
+            <FormGroup row>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={props.enablePostMessage}
+                            onChange={props.onEnablePostMessageToggle}
+                            value={true}
+                        />
+                    }
+                    label="Enable postMessage"
+                    color="inherit"
+                />
+            </FormGroup>
+
         </Toolbar>
     </AppBar>
 );

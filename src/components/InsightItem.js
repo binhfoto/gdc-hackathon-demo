@@ -14,7 +14,10 @@ export default ({projectId, uri, onEdit, onDelete}) => {
                     <Visualization
                         projectId={projectId}
                         uri={uri}
-                        config={{legend: {position: 'right'}}}
+                        config={{legend: {
+                            enabled: false,
+                            position: 'right'
+                        }}}
                     />
                 </div>
             </Paper>
