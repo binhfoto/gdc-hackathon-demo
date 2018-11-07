@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu/Menu';
@@ -17,7 +16,7 @@ const styles = {
     },
     menuButton: {
         marginLeft: -12,
-        marginRight: 20
+        marginRight: 8
     }
 };
 
@@ -51,8 +50,8 @@ class MyAppBar extends Component {
         return (
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                        <MenuIcon/>
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="GDC">
+                        <img className="logo" src="logo.png" alt="GoodData"/>
                     </IconButton>
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         LOL2 - Hackathon Demo
