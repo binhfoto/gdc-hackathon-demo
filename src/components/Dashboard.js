@@ -11,7 +11,7 @@ import withTheme from './material-ui/withTheme';
 import {createReportUrl, getReportObjectId} from '../utils';
 import {registerReceiveMessage, sendMessage, unregisterReceiveMessage} from '../utils/communication';
 
-const {projectId, insightUris} = require('../config');
+const {projectId, insights} = require('../config');
 
 class Dashboard extends Component {
 
@@ -21,32 +21,30 @@ class Dashboard extends Component {
             enablePostMessage: true,
 
             isOpenAD: false,
-            insights: insightUris.map((uri) => ({uri, key: uuidv4()}))
+            insights: insights.map(insight => ({...insight, key: uuidv4()}))
         };
 
         this.refreshADKey = 1;
-        this.editedUris = [];
+        this.editedInsights = [];
         this.editingReportId = null;
 
         registerReceiveMessage(this.handleReceiveMessage);
     }
 
     handleAddClick = () => {
-        this.handleEditClick('/reportId');
+        this.handleEditClick({});
     };
 
-    handleEditClick = (uri) => {
-        console.log('edit report', uri);
+    handleEditClick = ({uri, identifier}) => {
+        uri && console.log('edit report', uri);
 
-        const reportId = getReportObjectId(uri);
-        if (!reportId) {
-            return console.error('Can\'t get report id from uri', uri);
-        }
+        const reportId = uri ? getReportObjectId(uri) : identifier;
+        !reportId && console.log('Create new insight');
 
         if (this.state.enablePostMessage) {
-            const data = reportId === 'reportId' ?
-                {projectId} : // new insight
-                {reportId, projectId}; // edit insight
+            const data = reportId ?
+                            {reportId, projectId} : // edit insight
+                            {projectId}; // new insight
 
             // send message to embedded AD
             sendMessage(data);
@@ -58,12 +56,15 @@ class Dashboard extends Component {
         this.setState({isOpenAD: true});
     };
 
-    handleDeleteClick = (uri) => {
+    handleDeleteClick = ({uri, identifier}) => {
         console.log('delete report', uri);
         let {insights} = this.state;
         insights = insights.filter(insight => {
-            let {uri: _uri} = insight;
-            return uri !== _uri;
+            let {uri: _uri, identifier: _identifier} = insight;
+            if (uri) {
+                return uri !== _uri;
+            }
+            return identifier !== _identifier;
         });
         this.setState({insights});
     };
@@ -71,7 +72,7 @@ class Dashboard extends Component {
     handleCloseClick = () => {
         console.log('close AD');
 
-        if (!this.editedUris.length) {
+        if (!this.editedInsights.length) {
             // close AD if insight is not edited
             this.setState({isOpenAD: false});
             return;
@@ -81,27 +82,29 @@ class Dashboard extends Component {
 
         // in AD, user can create new and edit many insights
         // once AD closed, these insights should be created or updated
-        this.editedUris.forEach(uri => {
+        this.editedInsights.forEach(({uri, identifier}) => {
             const index = findIndex(insights, (insight) => {
-                return insight.uri === uri;
+                return insight.uri === uri || insight.identifier === identifier;
             });
             if (index === -1) {
                 insights.push({
-                    uri, key: uuidv4()
+                    uri,
+                    identifier,
+                    key: uuidv4()
                 });
             } else {
                 insights[index].key = uuidv4();
             }
         });
-        this.editedUris = []; // clean up
+        this.editedInsights = []; // clean up
         this.setState({insights, isOpenAD: false}); // close AD
     };
 
-    handleReceiveMessage = (uri) => {
+    handleReceiveMessage = (message) => {
         // persist insight that is created or updated in AD
         // more detail, AD will send message 'visualizationSaved' to parent app
-        // this message attaches 'uri'
-        this.editedUris.push(uri);
+        // this message attaches 'uri' and 'identifier'
+        this.editedInsights.push(message);
     };
 
     forceEmbeddedADUpdate = () => {
