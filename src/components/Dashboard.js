@@ -41,6 +41,8 @@ class Dashboard extends Component {
         const reportId = uri ? getReportObjectId(uri) : identifier;
         !reportId && console.log('Create new insight');
 
+        this.editingReportId = reportId || 'reportId';
+
         if (this.state.enablePostMessage) {
             const data = reportId ?
                             {reportId, projectId} : // edit insight
@@ -51,7 +53,6 @@ class Dashboard extends Component {
         } else {
             // reload embedded AD with report Id
             this.forceEmbeddedADUpdate();
-            this.editingReportId = reportId;
         }
         this.setState({isOpenAD: true});
     };
