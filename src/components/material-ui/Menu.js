@@ -20,12 +20,14 @@ class MyMenu extends React.Component {
 
     handleEditClick = () => {
         this.handleCloseMenu();
-        this.props.onEdit(this.props.uri);
+        const {uri, identifier} = this.props;
+        this.props.onEdit({uri, identifier});
     };
 
     handleDeleteClick = () => {
         this.handleCloseMenu();
-        this.props.onDelete(this.props.uri);
+        const {uri, identifier} = this.props;
+        this.props.onDelete({uri, identifier});
     };
 
     render() {

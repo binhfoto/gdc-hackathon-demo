@@ -32,7 +32,9 @@ const handleMessage = (callback) => (event) => {
 
     const {product, event: {data, name}} = gdc;
     if (product === 'analyticalDesigner' && name === 'visualizationSaved') {
-        callback(get(data, 'visualizationObject.meta.uri', null));
+        const uri = get(data, 'visualizationObject.meta.uri', null);
+        const identifier = get(data, 'visualizationObject.meta.identifier', null);
+        callback({uri, identifier});
     }
 };
 
